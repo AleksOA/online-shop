@@ -57,12 +57,13 @@
      margin-top: 30px;
      display: flex;
      justify-content: space-between;
+     flex-wrap: wrap;
  }
 
  .cards__card {
      box-shadow: 1px 1px 5px #000;
      max-width: 300px;
-     margin: 0 5px;
+     margin: 5px 5px;
  }
 
  .cards__card-content {
