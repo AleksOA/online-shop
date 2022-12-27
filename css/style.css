@@ -1,0 +1,159 @@
+ /* HEADER START */
+ .container {
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 0 15px;
+     min-height: 40px;
+ }
+
+ .header__inner {
+     position: relative;
+ }
+
+ .header__cart {
+     position: absolute;
+     right: 10px;
+     top: 10px;
+     cursor: pointer;
+ }
+
+ .header__cart:hover {
+     transform: scale(1.1);
+ }
+
+ .header__cart-image {
+     position: relative;
+ }
+
+ .header__cart-img {
+     width: 24px;
+     height: 24px;
+ }
+
+ .header__cart-namber {
+     position: absolute;
+     top: 7px;
+     right: 26px;
+     color: rgba(20, 20, 107, 0.767);
+     font-family: 'Lexend', sans-serif;
+     font-weight: 700;
+     font-size: 8px;
+     line-height: 10px;
+ }
+
+ /* HEADER FINISH */
+
+
+
+ /* SECTIONS CARDS START */
+
+ .container-cards {
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 0 15px;
+ }
+
+ .cards__inner {
+     margin-top: 30px;
+     display: flex;
+     justify-content: space-between;
+ }
+
+ .cards__card {
+     box-shadow: 1px 1px 5px #000;
+     max-width: 300px;
+     margin: 0 5px;
+ }
+
+ .cards__card-content {
+     padding: 10px;
+ }
+
+ .cards__card-image {
+     max-width: 250px;
+     height: auto;
+     margin: 0 auto;
+ }
+
+ .cards__card-img {
+     width: 100%;
+     height: auto;
+     display: block;
+ }
+
+ .cards__card-name {
+     font-family: 'Lexend', sans-serif;
+     font-weight: 700;
+     font-size: 18px;
+     line-height: 28px;
+     color: #000;
+     margin: 20px 0 5px 0;
+     text-align: center;
+ }
+
+ .cards__card-size {
+     font-family: 'Lexend', sans-serif;
+     display: flex;
+     justify-content: center;
+
+ }
+
+ .cards__size-title {
+     font-family: 'Lexend', sans-serif;
+     font-weight: 700;
+     font-size: 18px;
+     line-height: 28px;
+     color: #000;
+     margin: 5px 0 5px 0;
+     text-align: center;
+ }
+
+ .cards__size-value {
+     font-family: 'Lexend', sans-serif;
+     font-weight: 700;
+     font-size: 18px;
+     line-height: 28px;
+     color: #000;
+     margin: 5px 0px 5px 10px;
+     text-align: center;
+     cursor: pointer;
+     transition: all 0.2s;
+ }
+
+ .cards__size-value:hover {
+     transform: scale(1.2);
+ }
+
+ .cards__card-more {
+     font-family: 'Lexend', sans-serif;
+     font-weight: 700;
+     font-size: 14px;
+     line-height: 28px;
+     color: #000;
+     margin: 10px auto;
+     display: block;
+     cursor: pointer;
+ }
+
+ .cards__card-price {
+     font-family: 'Lexend', sans-serif;
+     font-weight: 700;
+     font-size: 18px;
+     line-height: 28px;
+     color: #000;
+     margin: 10px 0 10px 0;
+     text-align: center;
+ }
+
+ .cards__card-more {
+     font-family: 'Lexend', sans-serif;
+     font-weight: 700;
+     font-size: 14px;
+     line-height: 28px;
+     color: #000;
+     margin: 5px auto;
+     display: block;
+     cursor: pointer;
+ }
+
+ /* SECTIONS CARDS FINISH */

@@ -43,68 +43,36 @@ header.classList.add('header');
 const container = document.createElement('div');
 document.querySelector('.header').appendChild(container);
 container.classList.add('container');
-container.style.maxWidth = "1200px";
-container.style.margin = "0 auto";
-container.style.padding = "0 15px";
-container.style.minHeight = "40px";
-
 
 const div_header__inner = document.createElement('div');
 document.querySelector('.container').appendChild(div_header__inner);
 div_header__inner.classList.add('header__inner');
-div_header__inner.style.position = "relative";
-
 
 
 const div_header__cart = document.createElement('div');
 document.querySelector('.header__inner').appendChild(div_header__cart);
 div_header__cart.classList.add('header__cart');
-div_header__cart.style.position = "absolute";
-div_header__cart.style.right = "10px";
-div_header__cart.style.top = "10px";
-div_header__cart.style.cursor = "pointer";
-
-div_header__cart.onmouseenter = function () {
-    div_header__cart.style.transform = "scale(1.1)";
-}
-
-div_header__cart.onmouseleave = function () {
-    div_header__cart.style.transform = "scale(1)";
-}
 
 
 const a_header__cart_image = document.createElement('a');
 document.querySelector('.header__cart').appendChild(a_header__cart_image);
 a_header__cart_image.classList.add('header__cart-image');
 a_header__cart_image.setAttribute("href", "#");
-a_header__cart_image.style.position = "relative";
-
 
 
 const img_header__cart_img = document.createElement('img');
 document.querySelector('.header__cart-image').appendChild(img_header__cart_img);
 img_header__cart_img.classList.add('header__cart-img');
-img_header__cart_img.setAttribute("src", "/images/cart.svg");
+img_header__cart_img.setAttribute("src", "images/cart.svg");
 img_header__cart_img.setAttribute("alt", "cart icon");
-img_header__cart_img.style.width = "24px";
-img_header__cart_img.style.height = "24px";
+
 
 const div_header__cart_namber = document.createElement('div');
 document.querySelector('.header__cart-image').appendChild(div_header__cart_namber);
 div_header__cart_namber.classList.add('header__cart-namber');
 div_header__cart_namber.innerText = "7";
-div_header__cart_namber.style.position = "absolute";
-div_header__cart_namber.style.top = "7px";
-div_header__cart_namber.style.right = "26px";
-div_header__cart_namber.style.color = "rgba(20, 20, 107, 0.767)";
-div_header__cart_namber.style.fontFamily = "Lexend, sans-serif";
-div_header__cart_namber.style.fontWeight = "700";
-div_header__cart_namber.style.fontSize = "8px";
-div_header__cart_namber.style.lineHeight = "10px";
 
 //HEADER FINISH
-
-
 
 
 
@@ -117,17 +85,11 @@ sectionCards.classList.add('cards');
 const containerCards = document.createElement('div');
 document.querySelector('.cards').appendChild(containerCards);
 containerCards.classList.add('container-cards');
-containerCards.style.maxWidth = "1200px";
-containerCards.style.margin = "0 auto";
-containerCards.style.padding = "0 15px";
 
 
 const cardsInner = document.createElement('div');
 document.querySelector('.container-cards').appendChild(cardsInner);
 cardsInner.classList.add('cards__inner');
-cardsInner.style.marginTop = "30px";
-cardsInner.style.display = "flex";
-cardsInner.style.justifyContent = "space-between";
 
 
 newCard(1, 'cards__inner', "https://64.media.tumblr.com/26589a8059a4ea3f4162e16d70719e2c/tumblr_ovfknb7wtR1slhhf0o1_1280.jpg", "Product 1");
@@ -143,197 +105,113 @@ function newCard(number, where, urlImg, productName) {
     let a = `cardsCard${number}`;
     a = document.createElement('div');
     document.querySelector(`.${where}`).appendChild(a);
+    a.classList.add('cards__card');
     a.classList.add(`cards__card${number}`);
-    a.style.boxShadow = "1px 1px 5px #000";
-    a.style.maxWidth = "300px";
-    a.style.margin = "0 5px";
-
 
 
 
     let b = `cardsCardContent${number}`;
     b = document.createElement('div');
     document.querySelector(`.cards__card${number}`).appendChild(b);
+    b.classList.add(`cards__card-content`);
     b.classList.add(`cards__card-content${number}`);
-    b.style.padding = "10px 10px"
 
 
     let c = `cardsCardImage${number}`;
     c = document.createElement('div');
     document.querySelector(`.cards__card-content${number}`).appendChild(c);
+    c.classList.add(`cards__card-image`);
     c.classList.add(`cards__card-image${number}`);
-    c.style.maxWidth = "250px";
-    c.style.height = "auto";
-    c.style.margin = "0 auto";
-
-
 
 
     let d = `cardsCardImg${number}`;
     d = document.createElement('img');
     document.querySelector(`.cards__card-image${number}`).appendChild(d);
+    d.classList.add(`cards__card-img`);
     d.classList.add(`cards__card-img${number}`);
     d.setAttribute("src", `${urlImg}`);
     d.setAttribute("alt", "producte image");
-    d.style.width = "100%";
-    d.style.height = "auto";
-    d.style.display = "block";
-
 
 
     let e = `cardsCardName${number}`;
     e = document.createElement('div');
     document.querySelector(`.cards__card-content${number}`).appendChild(e);
+    e.classList.add(`cards__card-name`);
     e.classList.add(`cards__card-name${number}`);
     e.innerHTML = `${productName}`;
-    e.style.fontFamily = "Lexend, sans-serif";
-    e.style.fontWeight = "700";
-    e.style.fontSize = "18px";
-    e.style.lineHeight = "28px";
-    e.style.color = "#000";
-    e.style.margin = "20px 0 5px 0";
-    e.style.textAlign = "center";
 
 
 
     let f = `cardsCardSize${number}`;
     f = document.createElement('div');
     document.querySelector(`.cards__card-content${number}`).appendChild(f);
+    f.classList.add(`cards__card-size`);
     f.classList.add(`cards__card-size${number}`);
-    f.style.fontFamily = "Lexend, sans-serif";
-    f.style.display = "flex";
-    f.style.justifyContent = "center";
+
 
 
 
     let g = `cardsSizeTitle${number}`;
     g = document.createElement('div');
     document.querySelector(`.cards__card-size${number}`).appendChild(g);
+    g.classList.add(`cards__size-title`);
     g.classList.add(`cards__size-title${number}`);
-    g.style.fontFamily = "Lexend, sans-serif";
     g.innerHTML = "Size:";
-    g.style.fontWeight = "700";
-    g.style.fontSize = "18px";
-    g.style.lineHeight = "28px";
-    g.style.color = "#000";
-    g.style.margin = "5px 0 5px 0";
-    g.style.textAlign = "center";
+
 
 
     let h = `cardsSizeValueOne${number}`;
     h = document.createElement('div');
     document.querySelector(`.cards__card-size${number}`).appendChild(h);
+    h.classList.add(`cards__size-value`);
     h.classList.add(`cards__size-value${number}`);
-    h.style.fontFamily = "Lexend, sans-serif";
     h.innerHTML = "s";
-    h.style.fontWeight = "700";
-    h.style.fontSize = "18px";
-    h.style.lineHeight = "28px";
-    h.style.color = "#000";
-    h.style.margin = "5px 0px 5px 10px";
-    h.style.textAlign = "center";
-    h.style.cursor = "pointer";
-    h.style.transition = "all 0.3s";
 
-
-    h.onmouseenter = function () {
-        h.style.transform = "scale(1.2)";
-    }
-
-    h.onmouseleave = function () {
-        h.style.transform = "scale(1)";
-    }
 
 
 
     let i = `cardsSizeValueTwo${number}`;
     i = document.createElement('div');
     document.querySelector(`.cards__card-size${number}`).appendChild(i);
+    i.classList.add(`cards__size-value`);
     i.classList.add(`cards__size-value${number}`);
     i.style.fontFamily = "Lexend, sans-serif";
     i.innerHTML = "m";
-    i.style.fontWeight = "700";
-    i.style.fontSize = "18px";
-    i.style.lineHeight = "28px";
-    i.style.color = "#000";
-    i.style.margin = "5px 0px 5px 10px";
-    i.style.textAlign = "center";
-    i.style.cursor = "pointer";
-    i.style.transition = "all 0.3s";
-
-    i.onmouseenter = function () {
-        i.style.transform = "scale(1.2)";
-    }
-
-    i.onmouseleave = function () {
-        i.style.transform = "scale(1)";
-    }
 
 
 
     let j = `cardsSizeValueThree${number}`;
     j = document.createElement('div');
     document.querySelector(`.cards__card-size${number}`).appendChild(j);
+    j.classList.add(`cards__size-value`);
     j.classList.add(`cards__size-value${number}`);
     j.style.fontFamily = "Lexend, sans-serif";
     j.innerHTML = "l";
-    j.style.fontWeight = "700";
-    j.style.fontSize = "18px";
-    j.style.lineHeight = "28px";
-    j.style.color = "#000";
-    j.style.margin = "5px 0px 5px 10px";
-    j.style.textAlign = "center";
-    j.style.cursor = "pointer";
-    j.style.transition = "all 0.3s";
-
-    j.onmouseenter = function () {
-        j.style.transform = "scale(1.2)";
-    }
-
-    j.onmouseleave = function () {
-        j.style.transform = "scale(1)";
-    }
-
 
 
     let k = `cardsCardMore${number}`;
     k = document.createElement('button');
     document.querySelector(`.cards__card-content${number}`).appendChild(k);
+    k.classList.add(`cards__card-more`);
     k.classList.add(`cards__card-more${number}`);
     k.innerHTML = "Read more"
-    k.style.fontWeight = "700";
-    k.style.fontSize = "14px";
-    k.style.lineHeight = "28px";
-    k.style.color = "#000";
-    k.style.margin = "10px auto";
-    k.style.display = "block";
-    k.style.cursor = "pointer";
+
 
     let l = `cardsCardPrice${number}`;
     l = document.createElement('div');
     document.querySelector(`.cards__card-content${number}`).appendChild(l);
+    l.classList.add(`cards__card-price`);
     l.classList.add(`cards__card-price${number}`);
     l.style.fontFamily = "Lexend, sans-serif";
     l.innerHTML = "20";
-    l.style.fontWeight = "700";
-    l.style.fontSize = "18px";
-    l.style.lineHeight = "28px";
-    l.style.color = "#000";
-    l.style.margin = "10px 0 10px 0";
-    l.style.textAlign = "center";
+
 
     let m = `cardsAddToCart${number}`;
     m = document.createElement('button');
     document.querySelector(`.cards__card-content${number}`).appendChild(m);
+    m.classList.add(`cards__card-more`);
     m.classList.add(`cards__card-more${number}`);
     m.innerHTML = "Add to cart"
-    m.style.fontWeight = "700";
-    m.style.fontSize = "14px";
-    m.style.lineHeight = "28px";
-    m.style.color = "#000";
-    m.style.margin = "5px auto";
-    m.style.display = "block";
-    m.style.cursor = "pointer";
 };
 
 
@@ -351,8 +229,8 @@ popup.style.left = '0';
 popup.style.width = '100%';
 popup.style.height = '100%';
 popup.style.backgroundColor = 'rgba(0, 0, 0, 0.386)';
-// popup.style.visibility = 'hidden';
-popup.style.visibility = 'visible';
+popup.style.visibility = 'hidden';
+// popup.style.visibility = 'visible';
 
 
 const popupBody = document.createElement('div');
