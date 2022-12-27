@@ -92,127 +92,134 @@ document.querySelector('.container-cards').appendChild(cardsInner);
 cardsInner.classList.add('cards__inner');
 
 
-newCard(1, 'cards__inner', "https://64.media.tumblr.com/26589a8059a4ea3f4162e16d70719e2c/tumblr_ovfknb7wtR1slhhf0o1_1280.jpg", "Product 1");
-newCard(2, 'cards__inner', "https://64.media.tumblr.com/7918ca72d8cb3566a37fbd627dcb24ac/tumblr_oupo142eEs1slhhf0o1_1280.jpg", "Product 2");
-newCard(3, 'cards__inner', "https://64.media.tumblr.com/4b5e14b48ae5129f5fd9d6eb8406cb50/tumblr_otdi8010Sf1slhhf0o1_1280.jpg", "Product 3");
-newCard(4, 'cards__inner', "https://64.media.tumblr.com/7bed8273f621486faecdd407969aef51/tumblr_otfcxeacdO1slhhf0o1_1280.jpg", "Product 4");
+addDataIntoCard();
+function addDataIntoCard() {
+    for (let i = 0; i < prods.length; i++) {
+        if (i >= 0) {
+
+            newCard(prods[i].id, 'cards__inner', prods[i].url, prods[i].name, prods[i].price);
+            dataSize(prods[i].size, prods[i].id);
+
+        }
+    }
+}
+
+function dataSize(item, itemId) {
+    for (let i = 0; i < item.length; i++) {
+        if (i >= 0) {
+
+            addNewSize(itemId, item[i]);
+
+        }
+    }
+}
+
+function addNewSize(id, valueSize) {
+    let size = `cardsSizeValue${valueSize}${id}`;
+    size = document.createElement('div');
+    document.querySelector(`.cards__card-size${id}`).appendChild(size);
+    size.classList.add(`cards__size-value`);
+    size.classList.add(`cards__size-value${valueSize}${id}`);
+    size.innerHTML = `${valueSize}`;
+}
 
 
 
 
-
-function newCard(number, where, urlImg, productName) {
-    let a = `cardsCard${number}`;
+function newCard(id, where, url, name, price) {
+    let a = `cardsCard${id}`;
     a = document.createElement('div');
     document.querySelector(`.${where}`).appendChild(a);
     a.classList.add('cards__card');
-    a.classList.add(`cards__card${number}`);
+    a.classList.add(`cards__card${id}`);
 
 
 
-    let b = `cardsCardContent${number}`;
+    let b = `cardsCardContent${id}`;
     b = document.createElement('div');
-    document.querySelector(`.cards__card${number}`).appendChild(b);
+    document.querySelector(`.cards__card${id}`).appendChild(b);
     b.classList.add(`cards__card-content`);
-    b.classList.add(`cards__card-content${number}`);
+    b.classList.add(`cards__card-content${id}`);
 
 
-    let c = `cardsCardImage${number}`;
+    let c = `cardsCardImage${id}`;
     c = document.createElement('div');
-    document.querySelector(`.cards__card-content${number}`).appendChild(c);
+    document.querySelector(`.cards__card-content${id}`).appendChild(c);
     c.classList.add(`cards__card-image`);
-    c.classList.add(`cards__card-image${number}`);
+    c.classList.add(`cards__card-image${id}`);
 
 
-    let d = `cardsCardImg${number}`;
+    let d = `cardsCardImg${id}`;
     d = document.createElement('img');
-    document.querySelector(`.cards__card-image${number}`).appendChild(d);
+    document.querySelector(`.cards__card-image${id}`).appendChild(d);
     d.classList.add(`cards__card-img`);
-    d.classList.add(`cards__card-img${number}`);
-    d.setAttribute("src", `${urlImg}`);
+    d.classList.add(`cards__card-img${id}`);
+    d.setAttribute("src", `${url}`);
     d.setAttribute("alt", "producte image");
 
 
-    let e = `cardsCardName${number}`;
+    let e = `cardsCardName${id}`;
     e = document.createElement('div');
-    document.querySelector(`.cards__card-content${number}`).appendChild(e);
+    document.querySelector(`.cards__card-content${id}`).appendChild(e);
     e.classList.add(`cards__card-name`);
-    e.classList.add(`cards__card-name${number}`);
-    e.innerHTML = `${productName}`;
+    e.classList.add(`cards__card-name${id}`);
+    e.innerHTML = `${name}`;
 
 
 
-    let f = `cardsCardSize${number}`;
+    let f = `cardsCardSize${id}`;
     f = document.createElement('div');
-    document.querySelector(`.cards__card-content${number}`).appendChild(f);
+    document.querySelector(`.cards__card-content${id}`).appendChild(f);
     f.classList.add(`cards__card-size`);
-    f.classList.add(`cards__card-size${number}`);
+    f.classList.add(`cards__card-size${id}`);
 
 
 
 
-    let g = `cardsSizeTitle${number}`;
+    let g = `cardsSizeTitle${id}`;
     g = document.createElement('div');
-    document.querySelector(`.cards__card-size${number}`).appendChild(g);
+    document.querySelector(`.cards__card-size${id}`).appendChild(g);
     g.classList.add(`cards__size-title`);
-    g.classList.add(`cards__size-title${number}`);
+    g.classList.add(`cards__size-title${id}`);
     g.innerHTML = "Size:";
 
 
-
-    let h = `cardsSizeValueOne${number}`;
-    h = document.createElement('div');
-    document.querySelector(`.cards__card-size${number}`).appendChild(h);
-    h.classList.add(`cards__size-value`);
-    h.classList.add(`cards__size-value${number}`);
-    h.innerHTML = "s";
-
-
-
-
-    let i = `cardsSizeValueTwo${number}`;
-    i = document.createElement('div');
-    document.querySelector(`.cards__card-size${number}`).appendChild(i);
-    i.classList.add(`cards__size-value`);
-    i.classList.add(`cards__size-value${number}`);
-    i.style.fontFamily = "Lexend, sans-serif";
-    i.innerHTML = "m";
-
-
-
-    let j = `cardsSizeValueThree${number}`;
-    j = document.createElement('div');
-    document.querySelector(`.cards__card-size${number}`).appendChild(j);
-    j.classList.add(`cards__size-value`);
-    j.classList.add(`cards__size-value${number}`);
-    j.style.fontFamily = "Lexend, sans-serif";
-    j.innerHTML = "l";
-
-
-    let k = `cardsCardMore${number}`;
+    let k = `cardsCardMore${id}`;
     k = document.createElement('button');
-    document.querySelector(`.cards__card-content${number}`).appendChild(k);
+    document.querySelector(`.cards__card-content${id}`).appendChild(k);
     k.classList.add(`cards__card-more`);
-    k.classList.add(`cards__card-more${number}`);
+    k.classList.add(`cards__card-more${id}`);
     k.innerHTML = "Read more"
 
 
-    let l = `cardsCardPrice${number}`;
+    let l = `cardsCardPrice${id}`;
     l = document.createElement('div');
-    document.querySelector(`.cards__card-content${number}`).appendChild(l);
+    document.querySelector(`.cards__card-content${id}`).appendChild(l);
     l.classList.add(`cards__card-price`);
-    l.classList.add(`cards__card-price${number}`);
+    l.classList.add(`cards__card-price${id}`);
     l.style.fontFamily = "Lexend, sans-serif";
-    l.innerHTML = "20";
+    l.innerHTML = `${price} $`;
 
 
-    let m = `cardsAddToCart${number}`;
+    let m = `cardsAddToCart${id}`;
     m = document.createElement('button');
-    document.querySelector(`.cards__card-content${number}`).appendChild(m);
+    document.querySelector(`.cards__card-content${id}`).appendChild(m);
     m.classList.add(`cards__card-more`);
-    m.classList.add(`cards__card-more${number}`);
+    m.classList.add(`cards__card-more${id}`);
     m.innerHTML = "Add to cart"
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
