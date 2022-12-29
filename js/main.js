@@ -75,7 +75,7 @@ div_header__cart_namber.innerText = "7";
 //HEADER FINISH
 
 
-
+// CARDS START
 
 const sectionCards = document.createElement('section');
 document.querySelector('body').appendChild(sectionCards);
@@ -108,18 +108,18 @@ function dataSize(item, itemId) {
     for (let i = 0; i < item.length; i++) {
         if (i >= 0) {
 
-            addNewSize(itemId, item[i]);
+            addNewSize(itemId, item[i], 'cards__size-value', 'cards__card-size');
 
         }
     }
 }
 
-function addNewSize(id, valueSize) {
+function addNewSize(id, valueSize, classNeme, classParentNeme) {
     let size = `cardsSizeValue${valueSize}${id}`;
     size = document.createElement('div');
-    document.querySelector(`.cards__card-size${id}`).appendChild(size);
-    size.classList.add(`cards__size-value`);
-    size.classList.add(`cards__size-value${valueSize}${id}`);
+    document.querySelector(`.${classParentNeme}${id}`).appendChild(size);
+    size.classList.add(`${classNeme}`);
+    size.classList.add(`${classNeme}${valueSize}${id}`);
     size.innerHTML = `${valueSize}`;
 }
 
@@ -132,6 +132,7 @@ function newCard(id, where, url, name, price) {
     document.querySelector(`.${where}`).appendChild(a);
     a.classList.add('cards__card');
     a.classList.add(`cards__card${id}`);
+    a.setAttribute("id", `${id}`);
 
 
 
@@ -209,6 +210,108 @@ function newCard(id, where, url, name, price) {
     m.innerHTML = "Add to cart"
 };
 
+// sizi active start
+const sizeValue = document.querySelectorAll('.cards__size-value');
+
+sizeValue.forEach(function (div) {
+    div.addEventListener('click', sizeActive);
+});
+
+function sizeActive() {
+    let parent = this.parentNode;
+    sizeVelueCurrentCard = parent.querySelectorAll('.cards__size-value');
+    sizeVelueCurrentCard.forEach(function (value) {
+        value.classList.remove('active');
+    });
+
+    this.classList.add('active');
+
+};
+
+
+// sizi active finish
+
+
+
+
+
+// set id card to local storage start
+const addToCart = document.querySelectorAll('.cards__card-more');
+
+
+addToCart.forEach(function (btn) {
+    btn.addEventListener('click', setIdCardLocalStorage);
+});
+
+
+function setIdCardLocalStorage() {
+
+    if (localStorage.getItem('cardData') == null) {
+        localStorage.setItem('cardData', JSON.stringify(newDateForLocalStorage(faindIdCurrentCard(this, `cards__card`), faindSizeCurrentCard(this, 'cards__size-value.active'))));
+        return true
+    }
+
+    if (filters(getArrayFromLocalStorage('cardData'), `${faindIdCurrentCard(this, `cards__card`)}${faindSizeCurrentCard(this, 'cards__size-value.active')}`) == true) {
+    }
+
+    else {
+        let mergedDataForLocalStorege = getArrayFromLocalStorage('cardData').concat(newDateForLocalStorage(faindIdCurrentCard(this, `cards__card`), faindSizeCurrentCard(this, 'cards__size-value.active', `cards__card`)));
+        localStorage.setItem('cardData', JSON.stringify(mergedDataForLocalStorege));
+    }
+}
+
+
+function getArrayFromLocalStorage(key) {
+    let getLocalStorage = localStorage.getItem(key);
+    let cardDataFromLocalStorage = JSON.parse(getLocalStorage);
+    return cardDataFromLocalStorage
+}
+
+
+function faindIdCurrentCard(item, classElem) {
+    let parentCard = item.closest(`.${classElem}`);
+    let idParent = parentCard.getAttribute("id");
+    return idParent
+}
+
+
+function faindSizeCurrentCard(item, classElem) {
+    let parentContent = item.parentNode;
+    let findClassActive = parentContent.querySelector(`.${classElem}`);
+    if (findClassActive !== null) {
+        let sizeActive = findClassActive.innerHTML;
+        return sizeActive
+    }
+    else {
+        sizeActive = 'not';
+        return sizeActive
+    }
+}
+
+function filters(array, filterValue) {
+    let newArray = array.filter(function (item) {
+        return item.hash == filterValue;
+    });
+
+    if (newArray.length >= 1) {
+        return true
+    }
+    return false
+};
+
+function newDateForLocalStorage(id, size) {
+    let quantity = '1';
+    let hash = `${id}${size}`
+    let DateForLocalStorage = [{ id: `${id}`, size: `${size}`, quantity: `${quantity}`, hash: `${hash}` }];
+    return DateForLocalStorage
+}
+
+// set id card to local storage finish
+
+
+
+
+// CARDS FINISH
 
 
 
@@ -259,6 +362,33 @@ const popupContentBoxInner = document.createElement('div');
 document.querySelector('.popup__content-box').appendChild(popupContentBoxInner);
 popupContentBoxInner.classList.add('popup__content-box-inner');
 
+
+
+
+
+// open popup start
+document.addEventListener('click', togglePopup);
+
+function togglePopup(event) {
+    if (popup.classList.contains('active')) {
+        if (!event.target.closest('.popup__content-box')) {
+            cart.classList.remove('active');
+            popup.classList.remove('active');
+        }
+
+        if (event.target.closest('.popup__close-background')) {
+            cart.classList.remove('active');
+            popup.classList.remove('active');
+        }
+    }
+
+    if (event.target.closest('.header__cart')) {
+        popup.classList.add('active');
+        openCart();
+    }
+}
+
+// open popup finish
 // POPUP FINISH
 
 
@@ -293,212 +423,205 @@ document.querySelector('.cart').appendChild(cartBoxInner);
 cartBoxInner.classList.add('cart-box-inner');
 
 
+function openCart() {
+    cart.classList.add('active');
+    addcartProduktCard();
+}
 
-cartProduktCard(1, 'https://64.media.tumblr.com/26589a8059a4ea3f4162e16d70719e2c/tumblr_ovfknb7wtR1slhhf0o1_1280.jpg', '2', 's', 'm', 'l', '20');
-cartProduktCard(2, 'https://64.media.tumblr.com/26589a8059a4ea3f4162e16d70719e2c/tumblr_ovfknb7wtR1slhhf0o1_1280.jpg', '2', 's', 'm', 'l', '20');
-cartProduktCard(3, 'https://64.media.tumblr.com/26589a8059a4ea3f4162e16d70719e2c/tumblr_ovfknb7wtR1slhhf0o1_1280.jpg', '2', 's', 'm', 'l', '20');
-cartProduktCard(4, 'https://64.media.tumblr.com/26589a8059a4ea3f4162e16d70719e2c/tumblr_ovfknb7wtR1slhhf0o1_1280.jpg', '2', 's', 'm', 'l', '20');
+function addcartProduktCard() {
+    for (let i = 0; i < prods.length; i++) {
+        if (i >= 0) {
+            cartProduktCard(prods[i].id, prods[i].url, '2', prods[i].price);
+            dataSizeCart(prods[i].size, prods[i].id);
+        }
+    }
+}
+
+function dataSizeCart(item, itemId) {
+    for (let i = 0; i < item.length; i++) {
+        if (i >= 0) {
+            addNewSize(itemId, item[i], 'cart-card-center-size-value', 'cart-card-center-size');
+        }
+    }
+}
 
 
-function cartProduktCard(number, urlImg, numberQuantity, sizeOne, sizeTwo, sizeThree, price) {
-    let a = `cartCard${number}`;
+
+
+
+function cartProduktCard(id, urlImg, numberQuantity, price) {
+    let a = `cartCard${id}`;
     a = document.createElement('div');
     document.querySelector('.cart-box-inner').appendChild(a);
     a.classList.add(`cart-card`);
-    a.classList.add(`cart-card${number}`);
+    a.classList.add(`cart-card${id}`);
 
 
 
-    let b = `cartCardImage${number}`;
+    let b = `cartCardImage${id}`;
     b = document.createElement('div');
-    document.querySelector(`.cart-card${number}`).appendChild(b);
+    document.querySelector(`.cart-card${id}`).appendChild(b);
     b.classList.add(`cart-card-image`);
-    b.classList.add(`cart-card-image${number}`);
+    b.classList.add(`cart-card-image${id}`);
 
-    let c = `cartCardImg${number}`;
+    let c = `cartCardImg${id}`;
     c = document.createElement('img');
-    document.querySelector(`.cart-card-image${number}`).appendChild(c);
+    document.querySelector(`.cart-card-image${id}`).appendChild(c);
     c.classList.add(`cart-produkt-card-img`);
-    c.classList.add(`cart-produkt-card-img${number}`);
+    c.classList.add(`cart-produkt-card-img${id}`);
     c.setAttribute('src', `${urlImg}`);
 
 
-    let d = `cartCardCenter${number}`;
+    let d = `cartCardCenter${id}`;
     d = document.createElement('div');
-    document.querySelector(`.cart-card${number}`).appendChild(d);
+    document.querySelector(`.cart-card${id}`).appendChild(d);
     d.classList.add(`cart-card-center`);
-    d.classList.add(`cart-card-center${number}`);
+    d.classList.add(`cart-card-center${id}`);
 
 
-    let quantity = `cartCardCenterQuantity${number}`;
+    let quantity = `cartCardCenterQuantity${id}`;
     quantity = document.createElement('div');
-    document.querySelector(`.cart-card-center${number}`).appendChild(quantity);
+    document.querySelector(`.cart-card-center${id}`).appendChild(quantity);
     quantity.classList.add(`cart-card-center-quantity`);
-    quantity.classList.add(`cart-card-center-quantity${number}`);
+    quantity.classList.add(`cart-card-center-quantity${id}`);
 
 
-    let e = `cartCardCenterPlusInner${number}`;
+    let e = `cartCardCenterPlusInner${id}`;
     e = document.createElement('div');
-    document.querySelector(`.cart-card-center-quantity${number}`).appendChild(e);
+    document.querySelector(`.cart-card-center-quantity${id}`).appendChild(e);
     e.classList.add(`cart-card-center-btn-plus-inner`);
-    e.classList.add(`cart-card-center-btn-plus-inner${number}`);
+    e.classList.add(`cart-card-center-btn-plus-inner${id}`);
 
 
-    let f = `cartCardCenterPlus${number}`;
+    let f = `cartCardCenterPlus${id}`;
     f = document.createElement('span');
-    document.querySelector(`.cart-card-center-btn-plus-inner${number}`).appendChild(f);
+    document.querySelector(`.cart-card-center-btn-plus-inner${id}`).appendChild(f);
     f.classList.add(`cart-card-center-plus`);
-    f.classList.add(`cart-card-center-plus${number}`);
+    f.classList.add(`cart-card-center-plus${id}`);
 
 
-    let g = `cartPlusOne${number}`;
+    let g = `cartPlusOne${id}`;
     g = document.createElement('span');
-    document.querySelector(`.cart-card-center-plus${number}`).appendChild(g);
+    document.querySelector(`.cart-card-center-plus${id}`).appendChild(g);
     g.classList.add(`cart-plus-one`);
-    g.classList.add(`cart-plus-one${number}`);
+    g.classList.add(`cart-plus-one${id}`);
 
 
-    leth = `cartPlusTwo${number}`;
+    leth = `cartPlusTwo${id}`;
     h = document.createElement('div');
-    document.querySelector(`.cart-card-center-plus${number}`).appendChild(h);
+    document.querySelector(`.cart-card-center-plus${id}`).appendChild(h);
     h.classList.add(`cart-plus-two`);
-    h.classList.add(`cart-plus-two${number}`);
+    h.classList.add(`cart-plus-two${id}`);
 
 
-    let i = `cartCardCenterBtnPlus${number}`;
+    let i = `cartCardCenterBtnPlus${id}`;
     i = document.createElement('button');
-    document.querySelector(`.cart-card-center-btn-plus-inner${number}`).appendChild(i);
+    document.querySelector(`.cart-card-center-btn-plus-inner${id}`).appendChild(i);
     i.classList.add(`cart-card-center-btn-plus`);
-    i.classList.add(`cart-card-center-btn-plus${number}`);
+    i.classList.add(`cart-card-center-btn-plus${id}`);
 
 
-    let quantityNumber = `cartCardCenterQuantityNumber${number}`;
+    let quantityNumber = `cartCardCenterQuantityNumber${id}`;
     quantityNumber = document.createElement('div');
-    document.querySelector(`.cart-card-center-quantity${number}`).appendChild(quantityNumber);
+    document.querySelector(`.cart-card-center-quantity${id}`).appendChild(quantityNumber);
     quantityNumber.classList.add(`cart-card-center-quantity-number`);
-    quantityNumber.classList.add(`cart-card-center-quantity-number${number}`);
+    quantityNumber.classList.add(`cart-card-center-quantity-number${id}`);
     quantityNumber.innerHTML = `${numberQuantity}`;
 
 
-    let j = `cartCardCenterMinusInner${number}`;
+    let j = `cartCardCenterMinusInner${id}`;
     j = document.createElement('div');
-    document.querySelector(`.cart-card-center-quantity${number}`).appendChild(j);
+    document.querySelector(`.cart-card-center-quantity${id}`).appendChild(j);
     j.classList.add(`cart-card-center-btn-minus-inner`);
-    j.classList.add(`cart-card-center-btn-minus-inner${number}`);
+    j.classList.add(`cart-card-center-btn-minus-inner${id}`);
 
 
-    let k = `cartCardCenterMinus${number}`;
+    let k = `cartCardCenterMinus${id}`;
     k = document.createElement('span');
-    document.querySelector(`.cart-card-center-btn-minus-inner${number}`).appendChild(k);
+    document.querySelector(`.cart-card-center-btn-minus-inner${id}`).appendChild(k);
     k.classList.add(`cart-card-center-minus`);
-    k.classList.add(`cart-card-center-minus${number}`);
+    k.classList.add(`cart-card-center-minus${id}`);
 
 
-    let l = `cartMinusOne${number}`;
+    let l = `cartMinusOne${id}`;
     l = document.createElement('span');
-    document.querySelector(`.cart-card-center-minus${number}`).appendChild(l);
+    document.querySelector(`.cart-card-center-minus${id}`).appendChild(l);
     l.classList.add(`cart-minus-one`);
-    l.classList.add(`cart-minus-one${number}`);
+    l.classList.add(`cart-minus-one${id}`);
 
 
-    let m = `cartCardCenterBtnMinus${number}`;
+    let m = `cartCardCenterBtnMinus${id}`;
     m = document.createElement('button');
-    document.querySelector(`.cart-card-center-btn-minus-inner${number}`).appendChild(m);
+    document.querySelector(`.cart-card-center-btn-minus-inner${id}`).appendChild(m);
     m.classList.add(`cart-card-center-btn-minus`);
-    m.classList.add(`cart-card-center-btn-minus${number}`);
+    m.classList.add(`cart-card-center-btn-minus${id}`);
 
 
-    let size = `cartCardCenterSize${number}`;
+    let size = `cartCardCenterSize${id}`;
     size = document.createElement('div');
-    document.querySelector(`.cart-card-center${number}`).appendChild(size);
+    document.querySelector(`.cart-card-center${id}`).appendChild(size);
     size.classList.add(`cart-card-center-size`);
-    size.classList.add(`cart-card-center-size${number}`);
+    size.classList.add(`cart-card-center-size${id}`);
 
 
 
-    let sizeTitle = `cartCardCenterSizeTitle${number}`;
+
+    let sizeTitle = `cartCardCenterSizeTitle${id}`;
     sizeTitle = document.createElement('div');
-    document.querySelector(`.cart-card-center-size${number}`).appendChild(sizeTitle);
+    document.querySelector(`.cart-card-center-size${id}`).appendChild(sizeTitle);
     sizeTitle.classList.add(`cart-card-center-size-title`);
-    sizeTitle.classList.add(`cart-card-center-size-title${number}`);
+    sizeTitle.classList.add(`cart-card-center-size-title${id}`);
     sizeTitle.innerHTML = "Size:";
 
 
-    let sizeValueOne = `cartCardCenterSizeValueOne${number}`;
-    sizeValueOne = document.createElement('div');
-    document.querySelector(`.cart-card-center-size${number}`).appendChild(sizeValueOne);
-    sizeValueOne.classList.add(`cart-card-center-size-value-one`);
-    sizeValueOne.classList.add(`cart-card-center-size-value-one${number}`);
-    sizeValueOne.style.fontFamily = "Lexend, sans-serif";
-    sizeValueOne.innerHTML = `${sizeOne}`;
-
-
-    let sizeValueTwo = `cartCardCenterSizeValueTwo${number}`;
-    sizeValueTwo = document.createElement('div');
-    document.querySelector(`.cart-card-center-size${number}`).appendChild(sizeValueTwo);
-    sizeValueTwo.classList.add(`cart-card-center-size-value-two`);
-    sizeValueTwo.classList.add(`cart-card-center-size-value-two${number}`);
-    sizeValueTwo.style.fontFamily = "Lexend, sans-serif";
-    sizeValueTwo.innerHTML = `${sizeTwo}`;
-
-
-    let sizeValueThree = `cartCardCenterSizeValueThree${number}`;
-    sizeValueThree = document.createElement('div');
-    document.querySelector(`.cart-card-center-size${number}`).appendChild(sizeValueThree);
-    sizeValueThree.classList.add(`cart-card-center-size-value-three`);
-    sizeValueThree.classList.add(`cart-card-center-size-value-three${number}`);
-    sizeValueThree.style.fontFamily = "Lexend, sans-serif";
-    sizeValueThree.innerHTML = `${sizeThree}`;
-
-
-    let cardRight = `cartCardRight${number}`;
+    let cardRight = `cartCardRight${id}`;
     cardRight = document.createElement('div');
-    document.querySelector(`.cart-card${number}`).appendChild(cardRight);
+    document.querySelector(`.cart-card${id}`).appendChild(cardRight);
     cardRight.classList.add(`cart-card-right`);
-    cardRight.classList.add(`cart-card-right${number}`);
+    cardRight.classList.add(`cart-card-right${id}`);
 
 
-    let productRemove = `cartCardRightProductRemoveInner${number}`;
+    let productRemove = `cartCardRightProductRemoveInner${id}`;
     productRemove = document.createElement('div');
-    document.querySelector(`.cart-card-right${number}`).appendChild(productRemove);
+    document.querySelector(`.cart-card-right${id}`).appendChild(productRemove);
     productRemove.classList.add(`cart-card-right-btn-remove-inner`);
-    productRemove.classList.add(`cart-card-right-btn-remove-inner${number}`);
+    productRemove.classList.add(`cart-card-right-btn-remove-inner${id}`);
 
 
-    let rightRemove = `cartCardRightRemove${number}`;
+    let rightRemove = `cartCardRightRemove${id}`;
     rightRemove = document.createElement('span');
-    document.querySelector(`.cart-card-right-btn-remove-inner${number}`).appendChild(rightRemove);
+    document.querySelector(`.cart-card-right-btn-remove-inner${id}`).appendChild(rightRemove);
     rightRemove.classList.add(`cart-card-right-remove`);
-    rightRemove.classList.add(`cart-card-right-remove${number}`);
+    rightRemove.classList.add(`cart-card-right-remove${id}`);
 
 
 
-    let cartRemoveOne = `cartRemoveOne${number}`;
+    let cartRemoveOne = `cartRemoveOne${id}`;
     cartRemoveOne = document.createElement('span');
-    document.querySelector(`.cart-card-right-remove${number}`).appendChild(cartRemoveOne);
+    document.querySelector(`.cart-card-right-remove${id}`).appendChild(cartRemoveOne);
     cartRemoveOne.classList.add(`cart-remove-one`);
-    cartRemoveOne.classList.add(`cart-remove-one${number}`);
+    cartRemoveOne.classList.add(`cart-remove-one${id}`);
 
 
-    let cartRemoveTwo = `cartRemoveTwo${number}`;
+    let cartRemoveTwo = `cartRemoveTwo${id}`;
     cartRemoveTwo = document.createElement('span');
-    document.querySelector(`.cart-card-right-remove${number}`).appendChild(cartRemoveTwo);
+    document.querySelector(`.cart-card-right-remove${id}`).appendChild(cartRemoveTwo);
     cartRemoveTwo.classList.add(`cart-remove-two`);
-    cartRemoveTwo.classList.add(`cart-remove-two${number}`);
+    cartRemoveTwo.classList.add(`cart-remove-two${id}`);
 
 
-    let btnRemove = `cartCardRightBtnRemove${number}`;
+    let btnRemove = `cartCardRightBtnRemove${id}`;
     btnRemove = document.createElement('button');
-    document.querySelector(`.cart-card-right-btn-remove-inner${number}`).appendChild(btnRemove);
+    document.querySelector(`.cart-card-right-btn-remove-inner${id}`).appendChild(btnRemove);
     btnRemove.classList.add(`cart-card-right-btn-remove`);
-    btnRemove.classList.add(`cart-card-right-btn-remove${number}`);
+    btnRemove.classList.add(`cart-card-right-btn-remove${id}`);
 
 
-    let cardRightPrice = `cardRightPrice${number}`;
+    let cardRightPrice = `cardRightPrice${id}`;
     cardRightPrice = document.createElement('div');
-    document.querySelector(`.cart-card-right${number}`).appendChild(cardRightPrice);
+    document.querySelector(`.cart-card-right${id}`).appendChild(cardRightPrice);
     cardRightPrice.classList.add(`cart-card-right-price`);
-    cardRightPrice.classList.add(`cart-card-right-price${number}`);
+    cardRightPrice.classList.add(`cart-card-right-price${id}`);
     cardRightPrice.innerHTML = `${price} $`;
 }
 
