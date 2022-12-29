@@ -18,7 +18,7 @@
  }
 
  .header__cart:hover {
-     transform: scale(1.1);
+     transform: scale(0.96);
  }
 
  .header__cart-image {
@@ -125,6 +125,12 @@
      transform: scale(1.2);
  }
 
+ .cards__size-value.active {
+     color: red;
+     transform: scale(1.2);
+
+ }
+
  .cards__card-more {
      font-family: 'Lexend', sans-serif;
      font-weight: 700;
@@ -171,7 +177,10 @@
      height: 100%;
      background-color: rgba(0, 0, 0, 0.386);
      visibility: hidden;
+ }
 
+ .popup.active {
+     visibility: visible;
  }
 
  .popup__body {
@@ -241,9 +250,16 @@
      position: relative;
      max-width: 700px;
      height: 500px;
-     /* display: none; */
+     display: none;
 
  }
+
+ .cart.active {
+     display: block;
+
+ }
+
+
 
  .cart-cost {
      font-family: 'Lexend', sans-serif;
@@ -466,7 +482,7 @@
      text-align: center;
  }
 
- .cart-card-center-size-value-one {
+ .cart-card-center-size-value {
      font-family: 'Lexend', sans-serif;
      font-weight: 700;
      font-size: 18px;
@@ -483,40 +499,6 @@
 
  }
 
- .cart-card-center-size-value-two {
-     font-family: 'Lexend', sans-serif;
-     font-weight: 700;
-     font-size: 18px;
-     line-height: 28px;
-     color: #000;
-     margin: 5px 0 5px 10px;
-     text-align: center;
-     cursor: pointer;
-     transition: all 0.2;
- }
-
- .cart-card-center-size-value-two:hover {
-     transform: scale(1.2);
-
- }
-
-
- .cart-card-center-size-value-three {
-     font-family: 'Lexend', sans-serif;
-     font-weight: 700;
-     font-size: 18px;
-     line-height: 28px;
-     color: #000;
-     margin: 5px 0 5px 10px;
-     text-align: center;
-     cursor: pointer;
-     transition: all 0.2;
- }
-
- .cart-card-center-size-value-three:hover {
-     transform: scale(1.2);
-
- }
 
  .cart-card-right {
      display: flex;
