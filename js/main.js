@@ -491,6 +491,9 @@ function closeCard(event) {
     localStorage.setItem('cardData', JSON.stringify(arr));
     currentCard.style.display = 'none';
     div_header__cart_namber.innerText = updateCartNamber(getArrayFromLocalStorage('cardData'));
+    let currentQuantity = currentCard.querySelector('.cart-card-center-quantity-number');
+    currentQuantity.innerHTML = 0;
+    totalCart();
     controlCloseCard++
 }
 
