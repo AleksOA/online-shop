@@ -117,6 +117,10 @@ function addDataIntoCard() {
 }
 
 function dataSize(item, itemId, classNeme, classParentNeme) {
+    if (item.length == 0) {
+        addNewSize(itemId, `oversized`, `${classNeme}`, `${classParentNeme}`);
+    }
+
     for (let i = 0; i < item.length; i++) {
         if (i >= 0) {
             addNewSize(itemId, item[i], `${classNeme}`, `${classParentNeme}`);
@@ -220,26 +224,48 @@ function newCard(id, where, url, name, price) {
     m.innerHTML = "Add to cart"
 };
 
-// sizi active start
-const sizeValue = document.querySelectorAll('.cards__size-value');
+// size active start
+sizeActiveClick('cards__size-value');
 
-sizeValue.forEach(function (div) {
-    div.addEventListener('click', sizeActive);
-});
+function sizeActiveClick(classSize) {
+    let sizeValue = document.querySelectorAll(`.${classSize}`);
 
-function sizeActive() {
-    let parent = this.parentNode;
-    sizeVelueCurrentCard = parent.querySelectorAll('.cards__size-value');
-    sizeVelueCurrentCard.forEach(function (value) {
-        value.classList.remove('active');
+    sizeValue.forEach(function (div) {
+        div.addEventListener('click', sizeActive);
     });
 
-    this.classList.add('active');
+    function sizeActive() {
+        let parent = this.parentNode;
+        sizeVelueCurrentCard = parent.querySelectorAll(`.${classSize}`);
+        sizeVelueCurrentCard.forEach(function (value) {
+            value.classList.remove('active');
+        });
 
-};
+        this.classList.add('active');
+
+    };
+}
+
+function sizeActiveFromArray(arr, classElem) {
+    arr.forEach(function dfg(elem) {
+
+        sizeVelueCurrentCard = document.querySelector(`.${classElem}${elem.hash}`);
+        if (sizeVelueCurrentCard == null) {
+        }
+        else {
+            let parent = sizeVelueCurrentCard.parentNode;
+            sizeVelueCurrent = parent.querySelectorAll(`.${classElem}`);
+            sizeVelueCurrent.forEach(function (value) {
+                value.classList.remove('active');
+            });
+
+            sizeVelueCurrentCard.classList.add('active');
+        }
+    })
 
 
-// sizi active finish
+}
+// size active finish
 
 
 
@@ -249,33 +275,35 @@ const addToCart = document.querySelectorAll('.cards__add-cart');
 
 
 addToCart.forEach(function (btn) {
-    btn.addEventListener('click', setIdCardLocalStorage);
+    btn.addEventListener('click', setArrAddToCardToLocalStorede);
 });
-
-
-function setIdCardLocalStorage() {
+function setArrAddToCardToLocalStorede() {
+    setIdCardLocalStorage(this, `cards__card`, `cards__size-value`);
+    div_header__cart_namber.innerText = updateCartNamber(getArrayFromLocalStorage('cardData'));
+}
+function setIdCardLocalStorage(parentThis, classItem, classItemSize) {
 
     if (localStorage.getItem('cardData') == null) {
-        localStorage.setItem('cardData', JSON.stringify(newDateForLocalStorage(faindIdCurrentCard(this, `cards__card`), faindSizeCurrentCard(this, 'cards__size-value.active'))));
+        localStorage.setItem('cardData', JSON.stringify(newDateForLocalStorage(faindIdCurrentCard(parentThis, classItem), faindSizeCurrentCard(parentThis, classItemSize))));
         return true
     }
 
-    if (filters(getArrayFromLocalStorage('cardData'), faindIdCurrentCard(this, `cards__card`)) == true) {
+    if (filters(getArrayFromLocalStorage('cardData'), faindIdCurrentCard(parentThis, classItem)) == true) {
         let arrayLocallSt = getArrayFromLocalStorage('cardData');
 
         let indexCurrentElem = arrayLocallSt.findIndex(item => {
-            if (item.id == faindIdCurrentCard(this, `cards__card`)) {
+            if (item.id == faindIdCurrentCard(parentThis, classItem)) {
                 return true
             }
         });
 
-        arrayLocallSt.splice(indexCurrentElem, 1, (newDateForLocalStorage(faindIdCurrentCard(this, `cards__card`), faindSizeCurrentCard(this, 'cards__size-value.active')))[0]);
+        arrayLocallSt.splice(indexCurrentElem, 1, (newDateForLocalStorage(faindIdCurrentCard(parentThis, classItem), faindSizeCurrentCard(parentThis, `${classItemSize}.active`)))[0]);
         let mergedDataForLocalStorege = arrayLocallSt;
         localStorage.setItem('cardData', JSON.stringify(mergedDataForLocalStorege));
     }
 
     else {
-        let mergedDataForLocalStorege = getArrayFromLocalStorage('cardData').concat(newDateForLocalStorage(faindIdCurrentCard(this, `cards__card`), faindSizeCurrentCard(this, 'cards__size-value.active')));
+        let mergedDataForLocalStorege = getArrayFromLocalStorage('cardData').concat(newDateForLocalStorage(faindIdCurrentCard(parentThis, classItem), faindSizeCurrentCard(parentThis, `${classItemSize}.active`)));
         localStorage.setItem('cardData', JSON.stringify(mergedDataForLocalStorege));
     }
 }
@@ -303,7 +331,7 @@ function faindSizeCurrentCard(item, classElem) {
         return sizeActive
     }
     else {
-        sizeActive = 'oversized';
+        sizeActive = 'not_selected';
         return sizeActive
     }
 }
@@ -321,7 +349,7 @@ function filters(array, filterValue) {
 
 function newDateForLocalStorage(id, size) {
     let quantity = '1';
-    let hash = `${id}${size}`
+    let hash = `${size}${id}`
 
     let arr = prods.filter(item => {
         return item.id == id;
@@ -332,6 +360,91 @@ function newDateForLocalStorage(id, size) {
     let allSize = arr[0].size;
     let DateForLocalStorage = [{ id: `${id}`, size: `${size}`, quantity: `${quantity}`, url: `${urlImg}`, price: `${price}`, allSize: allSize, hash: `${hash}` }];
     return DateForLocalStorage
+}
+
+function dataFromCartToLocalStorage() {
+
+    let dateForLocalStorage = [];
+
+    let cardInCart = document.querySelectorAll('.cart-card');
+
+    cardInCart.forEach(function (item) {
+        let quantity = item.querySelector('.cart-card-center-quantity-number').innerHTML;
+        let id = item.getAttribute('id');
+        let size = item.querySelector('.cart-card-center-size-value.active').innerHTML;
+        let hash = `${size}${id}`;
+        let urlImg = item.querySelector('.cart-produkt-card-img').getAttribute('src');
+
+        let priceCurrent = item.querySelector('.cart-card-right-price').innerHTML;
+        let a = priceCurrent.split('');
+        let b = a.length - 2;
+        let c = a.splice(b);
+        let price = a.join('');
+
+        let allSize = [];
+        let currentAllSize = item.querySelectorAll('.cart-card-center-size-value');
+        currentAllSize.forEach(function (size) {
+            let a = size.innerHTML;
+            allSize.push(a);
+        });
+
+        let dataCard = { id: `${id}`, size: `${size}`, quantity: `${quantity}`, url: `${urlImg}`, price: `${price}`, allSize: allSize, hash: `${hash}` };
+
+        dateForLocalStorage.push(dataCard);
+
+    })
+
+    localStorage.setItem('cardData', JSON.stringify(dateForLocalStorage));
+
+}
+
+function plusMinusQuantity() {
+    let btnPlus = document.querySelectorAll('.cart-card-center-btn-plus');
+    console.log(btnPlus);
+
+    let btnMinus = document.querySelectorAll('.cart-card-center-btn-minus');
+    console.log(btnPlus);
+
+    let btnClose = document.querySelectorAll('.cart-card-right-btn-remove');
+
+
+    btnPlus.forEach(function (btn) {
+        btn.addEventListener('click', plusQuantity);
+    })
+
+    btnMinus.forEach(function (btn) {
+        btn.addEventListener('click', minusQuantity);
+    })
+
+    btnClose.forEach(function (btn) {
+        btn.addEventListener('click', closeCard);
+    })
+
+
+}
+
+
+function plusQuantity(event) {
+    let quantity = event.target.closest('.cart-card-center-quantity').querySelector('.cart-card-center-quantity-number');
+    quantity.style.backgroundColor = 'transparent';
+    quantity = innerHTML = quantity.innerHTML++;
+};
+
+function minusQuantity(event) {
+    let quantity = event.target.closest('.cart-card-center-quantity').querySelector('.cart-card-center-quantity-number');
+    if (quantity.innerHTML == 1) {
+        quantity.style.backgroundColor = 'red';
+        quantity = innerHTML = quantity.innerHTML--;
+    }
+    else {
+        quantity = innerHTML = quantity.innerHTML--;
+    }
+};
+
+function closeCard(event) {
+    // event.preventdefault();
+    event.target.closest('.cart-card').remove();
+    // event.target.closest('.cart-card').style.visibility = 'hidden';
 }
 
 
@@ -388,17 +501,21 @@ document.addEventListener('click', togglePopup);
 function togglePopup(event) {
     if (popup.classList.contains('active')) {
         if (!event.target.closest('.popup__content-box')) {
+            dataFromCartToLocalStorage();
             removeElement('cart');
             popup.classList.remove('active');
             removeElement('read-more');
-
+            sizeActiveFromArray(getArrayFromLocalStorage('cardData'), 'cards__size-value');
 
         }
 
         if (event.target.closest('.popup__close-background')) {
+            dataFromCartToLocalStorage();
             removeElement('cart');
             popup.classList.remove('active');
             removeElement('read-more');
+            sizeActiveFromArray(getArrayFromLocalStorage('cardData'), 'cards__size-value');
+
         }
     }
 
@@ -406,6 +523,9 @@ function togglePopup(event) {
         popup.classList.add('active');
         cart();
         addProduktCardToCart(getArrayFromLocalStorage('cardData'));
+        sizeActiveClick('cart-card-center-size-value');
+        sizeActiveFromArray(getArrayFromLocalStorage('cardData'), 'cart-card-center-size-value');
+        plusMinusQuantity();
 
     }
 
@@ -555,6 +675,7 @@ function cartProduktCard(arr) {
     document.querySelector('.cart-box-inner').appendChild(a);
     a.classList.add(`cart-card`);
     a.classList.add(`cart-card${id}`);
+    a.setAttribute('id', id)
 
 
 
