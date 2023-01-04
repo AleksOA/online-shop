@@ -242,6 +242,7 @@ function sizeActiveClick(classSize) {
         });
 
         this.classList.add('active');
+        parent.querySelector('.cart-card-center-size-title').style.backgroundColor = 'transparent';
 
     };
 }
@@ -260,6 +261,7 @@ function sizeActiveFromArray(arr, classElem) {
             });
 
             sizeVelueCurrentCard.classList.add('active');
+
         }
     })
 
@@ -406,12 +408,14 @@ function dataFromCartToLocalStorage() {
 
 }
 
-function plusMinusQuantity() {
+function plusMinusQuantityBuy() {
     let btnPlus = document.querySelectorAll('.cart-card-center-btn-plus');
 
     let btnMinus = document.querySelectorAll('.cart-card-center-btn-minus');
 
     let btnClose = document.querySelectorAll('.cart-card-right-btn-remove');
+
+    let btnBuy = document.querySelector('.cart-btn');
 
 
     btnPlus.forEach(function (btn) {
@@ -426,8 +430,49 @@ function plusMinusQuantity() {
         btn.addEventListener('click', closeCard);
     })
 
+    btnBuy.addEventListener('click', buyBtn);
+
 
 }
+
+function buyBtn() {
+    let controlQuantity = 0;
+    let controlSize = 0;
+
+    let cardInCart = document.querySelectorAll('.cart-card');
+
+    cardInCart.forEach(function (item) {
+        if (!item.classList.contains('none')) {
+            let quantity = item.querySelector('.cart-card-center-quantity-number').innerHTML;
+            if (quantity == 0) {
+                controlQuantity++
+            }
+
+            let size = item.querySelectorAll('.cart-card-center-size-value');
+            let sizeControl = 0;
+            size.forEach(function (elem) {
+                if (elem.classList.contains('active')) {
+                    sizeControl++
+                }
+            });
+
+            if (sizeControl > 0) {
+                item.querySelector('.cart-card-center-size-title').style.backgroundColor = 'transparent';
+            }
+            else {
+                controlSize++
+                item.querySelector('.cart-card-center-size-title').style.backgroundColor = 'red';
+
+            }
+        }
+    })
+    if (controlQuantity == 0 && controlSize == 0) {
+        console.log('Buy')
+    }
+
+};
+
+
 
 function totalCart() {
     let totalCart = 0;
@@ -493,6 +538,8 @@ function closeCard(event) {
     div_header__cart_namber.innerText = updateCartNamber(getArrayFromLocalStorage('cardData'));
     let currentQuantity = currentCard.querySelector('.cart-card-center-quantity-number');
     currentQuantity.innerHTML = 0;
+    currentCard.classList.add('none');
+
     totalCart();
     controlCloseCard++
 }
@@ -580,7 +627,7 @@ function togglePopup(event) {
         addProduktCardToCart(getArrayFromLocalStorage('cardData'));
         sizeActiveClick('cart-card-center-size-value');
         sizeActiveFromArray(getArrayFromLocalStorage('cardData'), 'cart-card-center-size-value');
-        plusMinusQuantity();
+        plusMinusQuantityBuy();
         controlCloseCard = 0;
         totalCart();
 
@@ -805,6 +852,9 @@ function cartProduktCard(arr) {
     quantityNumber.classList.add(`cart-card-center-quantity-number`);
     quantityNumber.classList.add(`cart-card-center-quantity-number${id}`);
     quantityNumber.innerHTML = `${numberQuantity}`;
+    if (numberQuantity == 0) {
+        quantityNumber.style.backgroundColor = 'red';
+    }
 
 
     let j = `cartCardCenterMinusInner${id}`;
