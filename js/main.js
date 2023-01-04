@@ -371,7 +371,15 @@ function dataFromCartToLocalStorage() {
     cardInCart.forEach(function (item) {
         let quantity = item.querySelector('.cart-card-center-quantity-number').innerHTML;
         let id = item.getAttribute('id');
-        let size = item.querySelector('.cart-card-center-size-value.active').innerHTML;
+        let findClassActive = item.querySelector('.cart-card-center-size-value.active');
+        let size = '';
+        if (findClassActive !== null) {
+            size = findClassActive.innerHTML;
+        }
+        else {
+            size = 'not_selected';
+        }
+
         let hash = `${size}${id}`;
         let urlImg = item.querySelector('.cart-produkt-card-img').getAttribute('src');
 
@@ -400,10 +408,8 @@ function dataFromCartToLocalStorage() {
 
 function plusMinusQuantity() {
     let btnPlus = document.querySelectorAll('.cart-card-center-btn-plus');
-    console.log(btnPlus);
 
     let btnMinus = document.querySelectorAll('.cart-card-center-btn-minus');
-    console.log(btnPlus);
 
     let btnClose = document.querySelectorAll('.cart-card-right-btn-remove');
 
@@ -423,11 +429,35 @@ function plusMinusQuantity() {
 
 }
 
+function totalCart() {
+    let totalCart = 0;
+
+    let cardInCart = document.querySelectorAll('.cart-card');
+
+    cardInCart.forEach(function (item) {
+        let quantity = item.querySelector('.cart-card-center-quantity-number').innerHTML;
+
+        let priceCurrent = item.querySelector('.cart-card-right-price').innerHTML;
+        let a = priceCurrent.split('');
+        let b = a.length - 2;
+        let c = a.splice(b);
+        let price = a.join('');
+
+        let cardTotal = [+quantity] * [+price];
+
+        totalCart += cardTotal;
+    })
+
+    let cartCost = document.querySelector('.cart-cost');
+    cartCost.innerHTML = `${totalCart} $`;
+};
+
 
 function plusQuantity(event) {
     let quantity = event.target.closest('.cart-card-center-quantity').querySelector('.cart-card-center-quantity-number');
     quantity.style.backgroundColor = 'transparent';
     quantity = innerHTML = quantity.innerHTML++;
+    totalCart();
 };
 
 function minusQuantity(event) {
@@ -436,16 +466,34 @@ function minusQuantity(event) {
         quantity.style.backgroundColor = 'red';
         quantity = innerHTML = quantity.innerHTML--;
     }
+
+    if (quantity.innerHTML == 0) {
+    }
+
     else {
         quantity = innerHTML = quantity.innerHTML--;
     }
+    totalCart();
 };
 
+let controlCloseCard = 0;
 function closeCard(event) {
-    // event.preventdefault();
-    event.target.closest('.cart-card').remove();
-    // event.target.closest('.cart-card').style.visibility = 'hidden';
+    let currentCard = event.target.closest('.cart-card');
+    let id = currentCard.getAttribute('id');
+    let arr = getArrayFromLocalStorage('cardData');
+
+    let index = arr.findIndex(item => {
+        if (item.id == id) {
+            return true
+        }
+    });
+    let deletedCard = arr.splice(index, 1);
+    localStorage.setItem('cardData', JSON.stringify(arr));
+    currentCard.style.display = 'none';
+    div_header__cart_namber.innerText = updateCartNamber(getArrayFromLocalStorage('cardData'));
+    controlCloseCard++
 }
+
 
 
 // set id card to local storage finish
@@ -501,7 +549,9 @@ document.addEventListener('click', togglePopup);
 function togglePopup(event) {
     if (popup.classList.contains('active')) {
         if (!event.target.closest('.popup__content-box')) {
-            dataFromCartToLocalStorage();
+            if (controlCloseCard == 0) {
+                dataFromCartToLocalStorage();
+            }
             removeElement('cart');
             popup.classList.remove('active');
             removeElement('read-more');
@@ -510,7 +560,9 @@ function togglePopup(event) {
         }
 
         if (event.target.closest('.popup__close-background')) {
-            dataFromCartToLocalStorage();
+            if (controlCloseCard == 0) {
+                dataFromCartToLocalStorage();
+            }
             removeElement('cart');
             popup.classList.remove('active');
             removeElement('read-more');
@@ -526,6 +578,8 @@ function togglePopup(event) {
         sizeActiveClick('cart-card-center-size-value');
         sizeActiveFromArray(getArrayFromLocalStorage('cardData'), 'cart-card-center-size-value');
         plusMinusQuantity();
+        controlCloseCard = 0;
+        totalCart();
 
     }
 
@@ -619,7 +673,7 @@ function cart() {
     const cartCost = document.createElement('div');
     document.querySelector('.cart').appendChild(cartCost);
     cartCost.classList.add('cart-cost');
-    cartCost.innerHTML = `${800} $`;
+    cartCost.innerHTML = `${0} $`;
 
 
     const cartBtnInner = document.createElement('div');
