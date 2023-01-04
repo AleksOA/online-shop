@@ -542,6 +542,12 @@
 
  }
 
+ .cart-card-center-size-value.active {
+     color: red;
+     transform: scale(1.2);
+
+ }
+
 
  .cart-card-right {
      display: flex;
