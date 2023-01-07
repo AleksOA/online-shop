@@ -299,7 +299,10 @@
 
  .cart.active {
      display: block;
+ }
 
+ .cart.none {
+     display: none;
  }
 
 
@@ -620,3 +623,68 @@
  }
 
  /* CART FINISH */
+
+ /* FORM START */
+ .customerDataForm__inner.none {
+     display: none;
+ }
+
+ .customerDataForm__form {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-between;
+     max-width: 80%;
+     margin: 20px auto 25px auto;
+ }
+
+ .customerDataForm__input {
+     font-family: 'Lexend', sans-serif;
+     font-weight: 400;
+     font-size: 14px;
+     line-height: 20px;
+     color: #000;
+     width: 100%;
+     padding: 10px 15px;
+     margin-bottom: 15px;
+     box-shadow: 1px 1px 1px rgba(58, 62, 23, 0.57);
+ }
+
+ .customerDataForm__input--first-name.active {
+     background-color: rgba(253, 3, 3, 0.563);
+ }
+
+ .customerDataForm__input--last-name.active {
+     background-color: rgba(253, 3, 3, 0.563);
+ }
+
+ .customerDataForm__input--phone.active {
+     background-color: rgba(253, 3, 3, 0.563);
+ }
+
+ .customerDataForm__input--address.active {
+     background-color: rgba(253, 3, 3, 0.563);
+ }
+
+ .customerDataForm__btn {
+     font-family: 'Lexend', sans-serif;
+     font-weight: 400;
+     font-size: 14px;
+     line-height: 20px;
+     color: #000;
+     cursor: pointer;
+     box-shadow: 1px 1px 1px rgba(58, 62, 23, 0.57);
+ }
+
+
+ .customerDataForm__submit {
+     font-family: 'Lexend', sans-serif;
+     font-weight: 400;
+     font-size: 14px;
+     line-height: 20px;
+     color: #000;
+     width: 60px;
+     cursor: pointer;
+     box-shadow: 1px 1px 1px rgba(58, 62, 23, 0.57);
+ }
+
+ /* FORM FINISH */

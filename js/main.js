@@ -242,7 +242,12 @@ function sizeActiveClick(classSize) {
         });
 
         this.classList.add('active');
-        parent.querySelector('.cart-card-center-size-title').style.backgroundColor = 'transparent';
+        if (parent.classList.contains('cards__card-size')) {
+            parent.querySelector('.cards__size-title').style.backgroundColor = 'transparent';
+        }
+        if (parent.classList.contains('cart-card-center-size')) {
+            parent.querySelector('.cart-card-center-size-title').style.backgroundColor = 'transparent';
+        }
 
     };
 }
@@ -467,7 +472,7 @@ function buyBtn() {
         }
     })
     if (controlQuantity == 0 && controlSize == 0) {
-        console.log('Buy')
+        dataForm();
     }
 
 };
@@ -623,6 +628,7 @@ function togglePopup(event) {
 
     if (event.target.closest('.header__cart')) {
         popup.classList.add('active');
+
         cart();
         addProduktCardToCart(getArrayFromLocalStorage('cardData'));
         sizeActiveClick('cart-card-center-size-value');
@@ -630,6 +636,13 @@ function togglePopup(event) {
         plusMinusQuantityBuy();
         controlCloseCard = 0;
         totalCart();
+        if (popup.querySelector('.customerDataForm__inner') !== null) {
+            let cart = document.querySelector('.cart');
+            let form = document.querySelector('.customerDataForm__inner');
+            if (!form.classList.contains('none')) {
+                cart.classList.add('none');
+            }
+        }
 
     }
 
@@ -957,4 +970,167 @@ function cartProduktCard(arr) {
 }
 
 //CART FINISH
+
+
+//FORM START
+
+
+function dataForm() {
+    let cart = document.querySelector('.cart');
+
+    let customerDataForm = `
+            <form class="customerDataForm__form" action="#">
+                <input class="customerDataForm__input customerDataForm__input--first-name" placeholder="You first name" type="text"
+                name="firstName">
+                <input class="customerDataForm__input customerDataForm__input--last-name" placeholder="You last name" type="text"
+                name="lastName">
+                <input class="customerDataForm__input customerDataForm__input--phone" placeholder="You phone number" type="text"
+                name="phone">
+                <input class="customerDataForm__input customerDataForm__input--address" placeholder="You delivery address"
+                type="text" name="address">
+                <button class="customerDataForm__btn">Go dack</button>
+                <input class="customerDataForm__submit" value="Send" type="submit" name="submit">
+            </form>
+        `;
+
+    cart.classList.add('none');
+
+    if (document.querySelector('.popup__content-box-inner').querySelector('.customerDataForm__inner') == null) {
+        const form = document.createElement('div');
+        document.querySelector('.popup__content-box-inner').appendChild(form);
+        form.classList.add('customerDataForm__inner');
+        form.innerHTML = customerDataForm;
+
+        let btnGoBack = document.querySelector('.customerDataForm__btn');
+        btnGoBack.addEventListener('click', goBack);
+
+        let btnSend = document.querySelector('.customerDataForm__submit');
+        btnSend.addEventListener('click', send);
+    }
+    else {
+        let form = document.querySelector('.customerDataForm__inner');
+        form.classList.remove('none');
+    }
+
+}
+
+function goBack() {
+    let form = document.querySelector('.customerDataForm__inner');
+    let cart = document.querySelector('.cart');
+    form.classList.add('none');
+    cart.classList.remove('none');
+}
+
+
+
+function send(event) {
+    event.preventDefault();
+    let error = validateFirstName() + validateLastName() + validatePhone() + validateAddress();
+
+    if (error == 0) {
+        let orderData = [];
+        orderData.push(getDataFromForm());
+        orderData.push(getProductData());
+
+        console.log(orderData)
+        document.querySelector('.customerDataForm__form').reset();
+        removeElement('cart');
+        removeElement('customerDataForm__inner');
+        localStorage.clear();
+        div_header__cart_namber.innerText = updateCartNamber(getArrayFromLocalStorage('cardData'));
+
+        let sizeCardActive = document.querySelectorAll('.cards__size-value');
+        sizeCardActive.forEach(function (value) {
+            value.classList.remove('active');
+        });
+
+    }
+
+}
+
+function getProductData() {
+    let arrayFromLocalStorage = getArrayFromLocalStorage('cardData');
+    let arr = [];
+    let cost = {};
+    let a = document.querySelector('.cart-cost').innerHTML.split('');
+    let b = a.length - 2;
+    a.splice(b);
+    let price = a.join('');
+    cost.cost = price;
+    arr.push(cost);
+    arrayFromLocalStorage.forEach(function (elem) {
+        delete elem.allSize
+        delete elem.hash
+        delete elem.url
+        let a = prods.filter(item => {
+            return item.id == elem.id
+        })
+        elem.name = a[0].name;
+        arr.push(elem)
+    });
+    return arr
+}
+
+function getDataFromForm() {
+    let inputForm = document.querySelectorAll('.customerDataForm__input');
+    let arrDataForm = {};
+    inputForm.forEach(function (input) {
+        let key = input.getAttribute('name');
+        let value = input.value;
+        arrDataForm[key] = value;
+    });
+    return arrDataForm
+}
+
+
+function validateFirstName() {
+    let reg = /^[a-zA-Zа-яА-Я'][a-zA-Zа-яА-Я-' ]+[a-zA-Zа-яА-Я']?$/u;
+    let input = document.querySelector('.customerDataForm__input--first-name');
+    return validate(reg, input);
+
+}
+
+function validateLastName() {
+    let reg = /^[a-zA-Zа-яА-Я'][a-zA-Zа-яА-Я-' ]+[a-zA-Zа-яА-Я']?$/u;
+    let input = document.querySelector('.customerDataForm__input--last-name');
+    return validate(reg, input);
+
+}
+
+function validatePhone() {
+    let reg = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
+    let input = document.querySelector('.customerDataForm__input--phone');
+    return validate(reg, input);
+}
+
+function validateAddress() {
+    let reg = /^[a-zA-Zа-яА-Я0-9,\.\s]+$/;
+    let input = document.querySelector('.customerDataForm__input--address');
+    return validate(reg, input);
+
+}
+
+
+
+function validate(regex, elem) {
+    let i = 0;
+    if (regex.test(elem.value)) {
+        valid(elem);
+    }
+    else {
+        notValid(elem);
+        i++;
+    }
+    return i;
+}
+
+function notValid(input) {
+    input.classList.add('active');
+}
+
+function valid(input) {
+    input.classList.remove('active');
+}
+
+//FORM FINISH
 
