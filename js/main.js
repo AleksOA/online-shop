@@ -403,7 +403,7 @@ function dataFromCartToLocalStorage() {
             allSize.push(a);
         });
 
-        let dataCard = { id: `${id}`, size: `${size}`, quantity: `${quantity}`, url: `${urlImg}`, price: `${price}`, allSize: allSize, hash: `${hash}` };
+        let dataCard = { id: id, size: `${size}`, quantity: `${quantity}`, url: `${urlImg}`, price: `${price}`, allSize: allSize, hash: `${hash}` };
 
         dateForLocalStorage.push(dataCard);
 
@@ -979,7 +979,7 @@ function dataForm() {
     let cart = document.querySelector('.cart');
 
     let customerDataForm = `
-            <form class="customerDataForm__form" action="#">
+            <form class="customerDataForm__form" action="/">
                 <input class="customerDataForm__input customerDataForm__input--first-name" placeholder="You first name" type="text"
                 name="firstName">
                 <input class="customerDataForm__input customerDataForm__input--last-name" placeholder="You last name" type="text"
@@ -988,7 +988,7 @@ function dataForm() {
                 name="phone">
                 <input class="customerDataForm__input customerDataForm__input--address" placeholder="You delivery address"
                 type="text" name="address">
-                <button class="customerDataForm__btn">Go dack</button>
+                <button class="customerDataForm__btn">Go back</button>
                 <input class="customerDataForm__submit" value="Send" type="submit" name="submit">
             </form>
         `;
@@ -1004,8 +1004,9 @@ function dataForm() {
         let btnGoBack = document.querySelector('.customerDataForm__btn');
         btnGoBack.addEventListener('click', goBack);
 
-        let btnSend = document.querySelector('.customerDataForm__submit');
-        btnSend.addEventListener('click', send);
+
+        form.addEventListener('submit', send);
+
     }
     else {
         let form = document.querySelector('.customerDataForm__inner');
@@ -1014,7 +1015,8 @@ function dataForm() {
 
 }
 
-function goBack() {
+function goBack(e) {
+    e.preventDefault();
     let form = document.querySelector('.customerDataForm__inner');
     let cart = document.querySelector('.cart');
     form.classList.add('none');
@@ -1044,6 +1046,7 @@ function send(event) {
             value.classList.remove('active');
         });
 
+        popup.classList.remove('active');
     }
 
 }
